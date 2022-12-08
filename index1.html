@@ -1,0 +1,236 @@
+<!--
+   if gmail function not working try
+   1.on the less secure apps
+   2.off 2-factor authentication
+   3.login to your google account and try https://accounts.google.com/b/0/DisplayUnlockCaptcha
+   
+   work to done->none(insert pics)
+   -->
+<html>
+  <head>
+    <!--Displayd on title bar-->
+    <title>Rock-Paper-Scissors</title>
+    <!--Icon on title bar-->
+    <link rel='Shortcut Icon' type='image/x-icon' href='title_logo.png'>
+	
+	<script src="https://smtpjs.com/v3/smtp.js"></script>
+	
+	<!--Styles sheet-->
+	<style>
+	body{
+	background-color:black;
+	background-image:url('bg.jpg');
+	text-align:center;
+	}
+    table{
+    display: inline-block;
+	}
+	td{
+	height:50px; 
+	width:50px;
+	}
+	.swal-footer {
+    	text-align: center;
+    }
+
+	</style>
+	<!-- Sweet Alerts-->
+	<script src="swal.js"></script>
+  </head>
+  <body>
+     <!---------------------------------------------------------------------------------For Displaying Heading)-->
+      </br></br>
+	  <big><big><big><big><big><big><big><big><big><b style=" background-image:url('bg2.jpg');opacity:0.9;border-radius:50px;"><i id='h1' style="color:#ADEFD1FF;">&nbsp;&nbsp;Rock </i><i id='h2' style="color:#00203FFF;">Paper </i><i id='h3' style="color:#ADEFD1FF;">Scissors&nbsp;&nbsp;</i></b></big></big></big></big></big></big></big></big></big>
+      </br></br></br>
+	 <!---------------------------------------------------------------------------------For Displaying No.of Matches-->
+	 <table border="0" cellspacing="0">
+     <tr>
+	 <td>
+	 <button id="total" style="height:50px; width:300px; border-radius: 50px; background-size: cover; background-image:url('bg2.jpg');"></button>
+	 </td>
+	 <td>
+	 <button id="tie" style="height:50px; width:300px; border-radius: 50px; background-size: cover; background-image:url('bg2.jpg');"></button>
+	 </td>
+	 </tr>
+     </table>	 
+	 </br></br></br>
+	 <!---------------------------------------------------------------------------------For Displaying Player Score-->
+	 <table border="0" cellspacing="0">
+     <tr>
+	 <td>
+	 <button id="pic1" style="height:300px; width:300px; border-radius: 150px; background-size: cover; background-color:#00203FFF; background-image:url('human.png');"></button>
+	 </td>
+	 </tr>
+	 <tr>
+	 <td>
+	 <button id="name1" style="height:75px; width:300px; border-radius: 50px; background-color:#ADEFD1FF; color:#00203FFF;"></button>
+	 </td>
+     </tr>
+	 <tr>
+	 <td>
+	 <button id="score1" style="height:75px; width:300px; border-radius: 50px; background-color:#00203FFF; color:#ADEFD1FF;"></button>
+	 </td>
+     </tr>
+     </table>	
+	 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	 <!---------------------------------------------------------------------------------For Displaying Computer Score-->
+	 <table border="0" cellspacing="0">
+     <tr>
+	 <td>
+	 <button id="pic2" style="height:300px; width:300px; border-radius: 150px; background-color:#ADEFD1FF;  background-size: cover; background-image:url('robot.jpg');"></button>
+	 </td>
+	 </tr>
+	 <tr>
+	 <td>
+	 <button id="name2" style="height:75px; width:300px; border-radius: 50px; background-color:#00203FFF; color:#ADEFD1FF;"></button>
+	 </td>
+     </tr>
+	 <tr>
+	 <td>
+	 <button id="score2" style="height:75px; width:300px; border-radius: 50px; background-color:#ADEFD1FF; color:#00203FFF;"></button>
+	 </td>
+     </tr>
+     </table>		 
+	 </br></br></br></br></br>
+	 <button style="height:100px; width:300px; border-radius: 100px;  background-size: cover; background-image:url('play.gif');" onclick="play()"></button>
+     <script type="text/javascript">
+	 var username;
+	 var score1,score2,count,tie;
+	 var computerval,userval;
+	 const computervals = ['Rock','Paper','Scissors'];
+	 window.onload = function onStartup()//------------------------------------------------------>>executed when page is loaded
+     {
+	  swal({
+		  title: "Hello Player!",
+		  text: "Please Enter Your Name :)",
+		  icon: "info",
+		  content: "input",
+		  closeOnClickOutside: false,
+		  }).then((value) => {
+		  username=value;
+		  username=username.trim();
+		  if(username=='' || username==null)
+		  {
+		   username="Player-"+Math.floor(1000 + Math.random() * 9000);
+		  }
+		  else
+		  {
+		   username=username.charAt(0).toUpperCase() + username.slice(1);
+		  }
+		  Email.send({
+				Host: "smtp.gmail.com",
+				Username: "noreply.rockps@gmail.com",
+				Password: "tfkbsfbllnnoykly",
+				To: "vidhey.bhogadi2003@gmail.com",
+				From: "noreply.rockps@gmail.com",
+				Subject: "'Rock Paper Scissors website' new Login Detected !",
+				Body: "<div style='text-align:center;'><img src='https://vidhey-rps.netlify.app/logo1.png' height='200px' width='200px'/><br/><br/><h1><u>Login</u> <u>Details</u> :</h1><table border='0' style='margin-left:auto; margin-right:auto;'><tr><td><b>User Name</b></td><td>:</td><td><b>" + username + "</b></td></tr></table></div>",
+			}).then((value) => {
+		  score1=0;
+		  score2=0;
+		  count=0;
+		  tie=0;
+		  document.getElementById('name1'). innerHTML = username;
+		  document.getElementById('name2'). innerHTML = 'Computer';
+		  document.getElementById('total'). innerHTML = 'Total Matches : 0';
+		  document.getElementById('tie'). innerHTML = ' Tie Matches : 0 ';
+		  document.getElementById('score1'). innerHTML = 'Score : 0';
+		  document.getElementById('score2'). innerHTML = 'Score : 0';
+		  document.getElementById('name1'). style. fontSize = "37px";
+	      document.getElementById('name2'). style. fontSize = "37px";
+	      document.getElementById('total'). style. fontSize = "30px";
+		  document.getElementById('tie'). style. fontSize = "30px";
+	      document.getElementById('score1'). style. fontSize = "37px";
+	      document.getElementById('score2'). style. fontSize = "37px";
+		  });
+	 });
+	 
+	 }
+	 
+	function play()//------------------------------------------------------>>To start game
+	{
+	swal({
+    title:"Let Us Start !",
+	text:"Choose one among the options below :)",
+	icon:"info",
+    buttons: {
+    Rock: "ROCK !",
+	Paper:"PAPER !",
+	Scissors:"SCISSOR !",
+    },
+	closeOnClickOutside: false,
+    }).then((value) => {
+	userval=value;
+	computerval=computervals[Math.floor(Math.random() * 3)];
+	sleep(1000). then(() => {
+     document.getElementById("h2").style.visibility = "hidden";
+	 document.getElementById("h3").style.visibility = "hidden";
+	 document.getElementById("pic1").style.backgroundImage = "url('Rockl.jpg')";
+	 document.getElementById("pic2").style.backgroundImage = "url('Rockr.jpg')";
+	});
+	sleep(2000). then(() => {
+     document.getElementById("h2").style.visibility = "visible";
+	 document.getElementById("pic1").style.backgroundImage = "url('Paperl.jpg')";
+	 document.getElementById("pic2").style.backgroundImage = "url('Paperr.jpg')";
+	});
+	sleep(3000). then(() => { 
+	 document.getElementById("h3").style.visibility = "visible";
+	 document.getElementById("pic1").style.backgroundImage = "url('Scissorsl.jpg')";
+	 document.getElementById("pic2").style.backgroundImage = "url('Scissorsr.jpg')";	
+	});
+	sleep(4000). then(() => { 
+	if(userval=='Rock')
+     document.getElementById("pic1").style.backgroundImage = "url('Rockl.jpg')";
+	else if(userval=='Paper')
+     document.getElementById("pic1").style.backgroundImage = "url('Paperl.jpg')";
+	else
+     document.getElementById("pic1").style.backgroundImage = "url('Scissorsl.jpg')";
+	if(computerval=='Rock')
+     document.getElementById("pic2").style.backgroundImage = "url('Rockr.jpg')";
+	else if(computerval=='Paper')
+     document.getElementById("pic2").style.backgroundImage = "url('Paperr.jpg')";
+	else
+     document.getElementById("pic2").style.backgroundImage = "url('Scissorsr.jpg')"; 
+	});
+	sleep(6000). then(() => { 
+	 document.getElementById("pic1").style.backgroundImage = "url('human.png')";
+	 document.getElementById("pic2").style.backgroundImage = "url('robot.jpg')";
+     if((userval=='Rock'&&computerval=='Scissors')||(userval=='Scissors'&&computerval=='Paper')||(userval=='Paper'&&computerval=='Rock'))
+	 {
+	    score1++;
+		document.getElementById('score1'). innerHTML = 'Score : '+score1;
+	 }
+    else if((computerval=='Rock'&&userval=='Scissors')||(computerval=='Scissors'&&userval=='Paper')||(computerval=='Paper'&&userval=='Rock'))
+	 {
+	    score2++;
+		document.getElementById('score2'). innerHTML = 'Score : '+score2;
+	 }	 
+	 else
+	 {
+	    tie++;
+		document.getElementById('tie'). innerHTML = 'Tie Matches : '+tie+' ';
+	 }
+	count++;
+	document.getElementById('total'). innerHTML = 'Total Matches : '+count;
+	Email.send({
+				Host: "smtp.gmail.com",
+				Username: "noreply.rockps@gmail.com",
+				Password: "tfkbsfbllnnoykly",
+				To: "vidhey.bhogadi2003@gmail.com",
+				From: "noreply.rockps@gmail.com",
+				Subject: "'Rock Paper Scissors website' Score Update Detected !",
+				Body: "<div style='text-align:center;'><img src='https://vidhey-rps.netlify.app/logo1.png' height='200px' width='200px'/><br/><br/><h1><u>Login</u> <u>Details</u> :</h1><table border='0' style='margin-left:auto; margin-right:auto;'><tr><td><b>UserID</b></td><td>:</td><td><b>" + username + "</b></td></tr><tr><td><b>Won Matches</b></td><td>:</td><td><b>" + score1 + "</b></td></tr><tr><td><b>Loose matches</b></td><td>:</td><td><b>" + score2 + "</b></td></tr><tr><td><b>Tied Matches</b></td><td>:</td><td><b>" + tie + "</b></td></tr><tr><td><b>Total Matches</b></td><td>:</td><td><b>" + count + "</b></td></tr></table></div>",
+			});
+	});
+	});
+	
+    } 
+     
+	function sleep(ms)//------------------------------------------------------>>To set delay 
+	{
+     return new Promise(resolve => setTimeout(resolve, ms));
+    } 	 
+     </script>	 
+  </body>
+  
+</html>
